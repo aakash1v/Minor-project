@@ -54,7 +54,7 @@
       <label for="photo" class="form-label">Upload New Photo (Optional)</label>
       <input type="file" class="form-control" name="photo" id="photo" accept="image/*">
       {% if student.photo %}
-        <img src="{{ url_for('static', filename='upload/' + student.photo) }}" alt="Profile Picture" class="img-fluid mt-3" style="max-width: 150px;">
+        <img src="{{ url_for('static', filename='uploads/' + student.photo) }}" alt="Profile Picture" class="img-fluid mt-3" style="max-width: 150px;">
       {% endif %}
     </div>
 

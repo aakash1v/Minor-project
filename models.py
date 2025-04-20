@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+
 
 db = SQLAlchemy()
 
@@ -17,7 +19,7 @@ class LeaveRequest(db.Model):
     parents_number = db.Column(db.String(15))
     issue_date = db.Column(db.Date)
 
-class Student(db.Model):
+class Student(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     prn = db.Column(db.String(20), unique=True)
     name = db.Column(db.String(100))

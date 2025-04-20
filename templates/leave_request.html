@@ -4,88 +4,74 @@
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-md-10 col-lg-8">
-      <div class="card shadow">
+      <div class="card shadow-lg border-0">
+        <!-- Fixed title color and style -->
         <div class="card-header bg-primary text-white text-center">
-          <h3>Leave Request Form</h3>
+          <h3 class="mb-0 fw-bold">Leave Request Form</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
           <form method="POST" action="{{ url_for('leave_req') }}">
-            <!-- Student ID -->
-            <div class="mb-3">
-              <label class="form-label">Student ID</label>
-              <input
-                type="text"
-                name="student_id"
-                class="form-control"
-                placeholder="Enter Student ID"
-              />
-            </div>
-
             <!-- Leave Type -->
             <div class="mb-3">
-              <label class="form-label">Leave Type</label>
-              <select name="leave_type" class="form-select">
-                <option value="">Select Type</option>
-                <option value="sick">Sick</option>
+              <label class="form-label fw-semibold">Leave Type</label>
+              <select name="leave_type" class="form-select" required>
+                <option value="" disabled selected>Select Type</option>
+                <option value="normal">Normal</option>
                 <option value="emergency">Emergency</option>
-                <option value="personal">Personal</option>
               </select>
             </div>
 
             <!-- Subject -->
             <div class="mb-3">
-              <label class="form-label">Subject</label>
+              <label class="form-label fw-semibold">Subject</label>
               <input
                 type="text"
                 name="subject"
                 class="form-control"
                 placeholder="Enter Subject"
+                required
               />
             </div>
 
             <!-- Description -->
             <div class="mb-3">
-              <label class="form-label">Description</label>
+              <label class="form-label fw-semibold">Description</label>
               <textarea
                 name="description"
                 class="form-control"
                 rows="4"
                 placeholder="Enter description..."
+                required
               ></textarea>
             </div>
 
             <!-- Start and End Date -->
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label class="form-label">Starting Date</label>
-                <input type="date" name="start_date" class="form-control" />
+                <label class="form-label fw-semibold">Starting Date</label>
+                <input type="date" name="start_date" class="form-control" required />
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label">Ending Date</label>
-                <input type="date" name="end_date" class="form-control" />
+                <label class="form-label fw-semibold">Ending Date</label>
+                <input type="date" name="end_date" class="form-control" required />
               </div>
             </div>
 
-            <!-- Parent Contact and Issue Date -->
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Parent's Number</label>
-                <input
-                  type="tel"
-                  name="parent_contact"
-                  class="form-control"
-                  placeholder="e.g., 9876543210"
-                />
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Issue Date</label>
-                <input type="date" name="issue_date" class="form-control" />
-              </div>
+            <!-- Parent's Number -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Parent's Contact Number</label>
+              <input
+                type="tel"
+                name="parent_contact"
+                class="form-control"
+                placeholder="e.g., 9876543210"
+                required
+              />
             </div>
 
-            <!-- Submit -->
+            <!-- Submit Button -->
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary btn-lg">
                 Submit Leave Request
               </button>
             </div>

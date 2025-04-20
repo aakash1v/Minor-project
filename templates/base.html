@@ -10,8 +10,20 @@
 
   <!-- Optional Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  
-      <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+ <!-- Theme CSS (light or dark, dynamically loaded) -->
+<link id="theme-style" rel="stylesheet" href="{{ url_for('static', filename='css/dark-style.css') }}">
+
+<style>
+  .form-switch .form-check-input {
+      cursor: pointer;
+    }
+    .form-switch label {
+      margin-left: 0.5rem;
+    }
+
+</style>
+
 
   {% block head %}{% endblock %}
 </head>
@@ -19,38 +31,56 @@
 
 <!-- Header / Navbar -->
 <header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="/">Gate Pass System</a>
+      <a class="navbar-brand fw-bold text-primary" href="/">Gate Pass System</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-          
-          {% if session.get('student_id') %}
-          <!-- Show profile picture with dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarProfileDropdown" role="button"
+        <li class="nav-item mx-2">
+          <div class="form-check form-switch text-light">
+            <input class="form-check-input" type="checkbox" id="themeToggle">
+            <label class="form-check-label" for="themeToggle">Dark Mode</label>
+          </div>
+        </li>
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item mx-2">
+            <a class="nav-link text-dark fw-medium" href="/">Home</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link text-dark fw-medium" href="/about">About</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link text-dark fw-medium" href="/contact">Contact</a>
+          </li>
+
+          {% if current_user.is_authenticated %}
+          <li class="nav-item dropdown ms-3">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="url_for('student_dashboard')" id="navbarProfileDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
+              {% if current_user.photo %}
+              <img src="{{ url_for('static', filename='uploads/' + current_user.photo) }}" alt="Profile Picture"
+                   class="rounded-circle me-2 border border-2 border-primary" width="40" height="40">
+              {% else %}
               <img src="{{ url_for('static', filename='uploads/default-avatar.png') }}"
-                   alt="Profile" class="rounded-circle me-2" width="30" height="30">
+                   alt="Profile" class="rounded-circle me-2 border border-2 border-secondary" width="40" height="40">
+              {% endif %}
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileDropdown">
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarProfileDropdown">
+              <li><a class="dropdown-item" href="{{ url_for('student_dashboard') }}">Dashboard</a></li>
               <li><a class="dropdown-item" href="{{ url_for('profile') }}">View Profile</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}">Logout</a></li>
             </ul>
+            
+          {% else %}
+          <li class="nav-item ms-3">
+            <a class="btn btn-outline-primary px-3" href="{{ url_for('login') }}">Login</a>
           </li>
-        {% else %}
-          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-        {% endif %}
-        
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -75,5 +105,31 @@
 
   <!-- Bootstrap JS Bundle (includes Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const themeLink = document.getElementById('theme-style');
+  
+    // Check and apply saved theme on load
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      themeLink.href = "{{ url_for('static', filename='css/style.css') }}";
+      toggle.checked = false;
+    } else {
+      themeLink.href = "{{ url_for('static', filename='css/dark-style.css') }}";
+      toggle.checked = true;
+    }
+  
+    // On toggle change
+    toggle.addEventListener('change', function () {
+      if (this.checked) {
+        themeLink.href = "{{ url_for('static', filename='css/dark-style.css') }}";
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeLink.href = "{{ url_for('static', filename='css/style.css') }}";
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+  
 </body>
 </html>

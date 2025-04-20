@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard - Gate Pass Management{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Welcome Message -->
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Welcome, {{ current_user.name }}!</h2>
+    <p class="text-muted">Track your leave history and apply for a new one below.</p>
+  </div>
+
+  <!-- Leave Requests Table -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-lg-12">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom">
+          <h5 class="mb-0 fw-semibold">Your Leave Requests</h5>
+        </div>
+        <div class="card-body p-3">
+            {% if leave_requests %}
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Leave Type</th>
+                    <th>Subject</th>
+                    <th>Leave Dates</th>
+                    <th>Issued On</th>
+                    <th>Teacher</th>
+                    <th>HOD</th>
+                    <th>Warden</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for request in leave_requests %}
+                  {% if request.final_status == 'Pending' %}
+                  <tr>
+                    <td>{{ request.type|capitalize }}</td>
+                    <td>{{ request.subject }}</td>
+                    <td>{{ request.starting_date.strftime('%d %b %Y') }} – {{ request.ending_date.strftime('%d %b %Y') }}</td>
+                    <td>{{ request.issue_date.strftime('%d %b %Y') }}</td>
+                    <td>{{ request.approvedby_teacheder or "Not yet" }}</td>
+                    <td>{{ request.approvedby_hod or "Not yet" }}</td>
+                    <td>{{ request.approvedby_warden or "Not yet" }}</td>
+                    <td>
+                      <span class="badge bg-warning text-dark">Pending</span>
+                    </td>
+                    <td>
+                        {% if request.final_status == 'Pending' %}
+                          <form action="{{ url_for('cancel_leave', leave_id=request.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this leave request?');">Cancel</button>
+                          </form>
+                        {% else %}
+                          <a href="{{ url_for('leave_req', leave_id=request.id) }}" class="btn btn-outline-secondary btn-sm">View</a>
+                        {% endif %}
+                      </td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+              <p class="text-muted">You have not submitted any leave requests yet.</p>
+            {% endif %}
+          </div>
+          
+      </div>
+    </div>
+  </div>
+
+  <!-- Leave Request Form -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-white border-bottom text-center">
+          <h5 class="mb-0 fw-semibold">Apply for Leave</h5>
+        </div>
+        <div class="card-body p-4">
+          <form method="POST" action="{{ url_for('leave_req') }}">
+            <!-- Leave Type -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Leave Type</label>
+              <select name="leave_type" class="form-select" required>
+                <option value="" disabled selected>Select Type</option>
+                <option value="normal">Normal</option>
+                <option value="emergency">Emergency</option>
+              </select>
+            </div>
+
+            <!-- Subject -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Subject</label>
+              <input type="text" name="subject" class="form-control" placeholder="E.g., Family Function" required>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea name="description" class="form-control" rows="3" placeholder="Brief reason for leave..." required></textarea>
+            </div>
+
+            <!-- Dates -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Start Date</label>
+                <input type="date" name="start_date" class="form-control" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">End Date</label>
+                <input type="date" name="end_date" class="form-control" required>
+              </div>
+            </div>
+
+            <!-- Parent Contact -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Parent's Contact Number</label>
+              <input type="tel" name="parent_contact" class="form-control" placeholder="e.g., 9876543210" required>
+            </div>
+
+            <!-- Submit -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-dark btn-lg">Submit Leave Request</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
