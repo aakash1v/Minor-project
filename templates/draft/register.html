@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block head %}
+  <script>
+    function toggleFields() {
+      const role = document.getElementById("role").value;
+      const sections = document.querySelectorAll(".role-section");
+      sections.forEach((section) => section.classList.add("d-none"));
+      if (role) {
+        document.getElementById(`${role}-fields`).classList.remove("d-none");
+      }
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card mx-auto shadow-lg p-4" style="max-width: 600px;">
+    <h2 class="text-center mb-4">Sign Up</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <!-- Full Name -->
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="full_name" class="form-control" placeholder="Enter your name" required />
+      </div>
+      <!-- Mobile -->
+      <div class="mb-3">
+        <label class="form-label">Mobile Number</label>
+        <input type="tel" name="mobile" class="form-control" placeholder="e.g., 9876543210" />
+      </div>
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter your email" required />
+      </div>
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Enter password" required />
+      </div>
+      <!-- Confirm Password -->
+      <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm password" required />
+      </div>
+      <!-- Role -->
+      <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select id="role" name="role" class="form-select" onchange="toggleFields()" required>
+          <option value="">Select Role</option>
+          <option value="student">Student</option>
+          <option value="hod">HOD</option>
+          <option value="dean">Dean</option>
+          <option value="warden">Warden</option>
+          <option value="others">Others</option>
+        </select>
+      </div>
+
+      <!-- Student Section -->
+      <div id="student-fields" class="role-section d-none">
+        <div class="mb-3">
+          <input type="number" name="prn" class="form-control" placeholder="PRN" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Course</label>
+          <select name="course" class="form-select" required>
+            <option value="">Select Course</option>
+            <option>B.A - Bachelor of Arts</option>
+            <option>B.Tech - Bachelor of Technology</option>
+            <option>B.Tech - Agriculture</option>
+            <option>B.Sc - Bachelor of Science</option>
+            <option>B.Sc - Agriculture</option>
+            <option>B.E - Bachelor of Engineering</option>
+            <option>B.Ed - Bachelor of Education</option>
+            <option>BBA - Bachelor of Business Administration</option>
+            <option>BCA - Bachelor of Computer Applications</option>
+            <option>LL.B - Bachelor of Laws</option>
+            <option>B.Lib.Sc - Bachelor of Library Science</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <input type="text" name="department" class="form-control" placeholder="Department" />
+        </div>
+      </div>
+      <div class="mb-3">
+        <input type="text" class="form-control" name="hostel"  placeholder="Hostel Name" />
+      </div>
+
+      <!-- HOD Section -->
+      <div id="hod-fields" class="role-section d-none">
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Department Name" />
+        </div>
+        <div class="mb-3">
+          <input type="number" class="form-control" placeholder="ID" />
+        </div>
+      </div>
+
+      <!-- Dean Section -->
+      <div id="dean-fields" class="role-section d-none">
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Dean Office Name" />
+        </div>
+        <div class="mb-3">
+          <input type="number" class="form-control" placeholder="ID" />
+        </div>
+      </div>
+
+      <!-- Warden Section -->
+      <div id="warden-fields" class="role-section d-none">
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Hostel Name" />
+        </div>
+        <div class="mb-3">
+          <input type="number" class="form-control" placeholder="ID" />
+        </div>
+      </div>
+
+      <!-- Others Section -->
+      <div id="others-fields" class="role-section d-none">
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Specify Role" />
+        </div>
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Reason" />
+        </div>
+      </div>
+
+      <!-- Photo -->
+      <div class="mb-3">
+        <label class="form-label">Upload Photo</label>
+        <input type="file" name="photo" class="form-control" />
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </div>
+
+      <!-- Login Redirect -->
+      <p class="text-center">
+        Already have an account?
+        <a href="/login" class="text-decoration-none">Login here</a>
+      </p>
+    </form>
+  </div>
+</div>
+{% endblock %}

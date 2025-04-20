@@ -1,13 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-</head>
-<body>
-    <h1>My home page...</h1>
+{% extends "base.html" %}
+{% block title %}Home - Gate Pass Management{% endblock %}
 
-</body>
-</html>
+{% block content %}
+<!-- Hero Section -->
+<div class="container py-5">
+  <div class="row align-items-center">
+    <div class="col-md-6 mb-4">
+      <h1 class="display-4 fw-bold text-primary">Smart Gate Pass Management System</h1>
+      <p class="lead text-muted mt-3">
+        A modern, efficient, and secure web-based solution for managing gate passes in college hostels.
+        Our system ensures smooth approvals from warden, HOD, and dean, providing real-time tracking and digital authorization.
+      </p>
+      <div class="mt-4">
+        <a href="/register" class="btn btn-primary btn-lg me-2">Get Started</a>
+        <a href="/login" class="btn btn-outline-primary btn-lg">Login</a>
+      </div>
+    </div>
+    <div class="col-md-6 text-center">
+      <img src="/static/images/college.jpg" alt="College Illustration" class="img-fluid rounded shadow">
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="container py-5">
+  <h2 class="text-center mb-5 fw-bold">Key Features</h2>
+  <div class="row text-center g-4">
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-file-earmark-lock-fill fs-1 text-primary"></i>
+          <h5 class="card-title mt-3">Digital Gate Pass</h5>
+          <p class="card-text">No more paperwork! Generate and track gate passes digitally with ease.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-check2-square fs-1 text-success"></i>
+          <h5 class="card-title mt-3">Multi-level Approval</h5>
+          <p class="card-text">Requests go through Warden, HOD, and Dean for streamlined authorization.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <i class="bi bi-clock-history fs-1 text-warning"></i>
+          <h5 class="card-title mt-3">Real-Time Tracking</h5>
+          <p class="card-text">Track the status of your request and get instant updates and alerts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer Call to Action -->
+<div class="container text-center py-5">
+  <h3 class="fw-bold">Ready to streamline gate pass approvals?</h3>
+  <p class="text-muted">Sign up today and simplify your college gate pass process!</p>
+  <a href="/register" class="btn btn-primary btn-lg">Create an Account</a>
+</div>
+{% endblock %}

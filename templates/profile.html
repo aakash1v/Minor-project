@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile | Gate Pass System{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4 mx-auto" style="max-width: 700px;">
+  <h2 class="mb-4 text-center">Your Profile</h2>
+  <form action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data">
+
+    <div class="row mb-3">
+      <div class="col">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" name="name" id="name" value="{{ student.name }}" required>
+      </div>
+      <div class="col">
+        <label for="dob" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" name="dob" id="dob" value="{{ student.dob }}" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <label for="branch" class="form-label">Branch</label>
+        <input type="text" class="form-control" name="branch" id="branch" value="{{ student.branch }}" required>
+      </div>
+      <div class="col">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" name="username" id="username" value="{{ student.username }}" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" name="email" id="email" value="{{ student.email }}" required>
+      </div>
+      <div class="col">
+        <label for="mobile" class="form-label">Mobile</label>
+        <input type="tel" class="form-control" name="mobile" id="mobile" value="{{ student.mobile }}" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="hostel" class="form-label">Hostel Name</label>
+      <input type="text" class="form-control" name="hostel" id="hostel" value="{{ student.hostel }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">New Password (Leave blank if no change)</label>
+      <input type="password" class="form-control" name="password" id="password">
+    </div>
+
+    <div class="mb-3">
+      <label for="photo" class="form-label">Upload New Photo (Optional)</label>
+      <input type="file" class="form-control" name="photo" id="photo" accept="image/*">
+      {% if student.photo %}
+        <img src="{{ url_for('static', filename='upload/' + student.photo) }}" alt="Profile Picture" class="img-fluid mt-3" style="max-width: 150px;">
+      {% endif %}
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Update Profile</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

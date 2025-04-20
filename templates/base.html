@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Gate Pass Management System{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Optional Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  
+      <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+  {% block head %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Header / Navbar -->
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">Gate Pass System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+          
+          {% if session.get('student_id') %}
+          <!-- Show profile picture with dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarProfileDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{ url_for('static', filename='uploads/default-avatar.png') }}"
+                   alt="Profile" class="rounded-circle me-2" width="30" height="30">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileDropdown">
+              <li><a class="dropdown-item" href="{{ url_for('profile') }}">View Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+        {% endif %}
+        
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 py-4">
+    <div class="container">
+      {% block content %}
+      <!-- Dynamic page content goes here -->
+      {% endblock %}
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light py-3 mt-auto">
+    <div class="container text-center">
+      <small>&copy; {{ current_year }} Gate Pass Management System. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
