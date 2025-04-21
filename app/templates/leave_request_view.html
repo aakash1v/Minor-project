@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Leave Request Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h3 class="mb-4">Leave Request Details</h3>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <p><strong>Leave Type:</strong> {{ leave.type|capitalize }}</p>
+      <p><strong>Subject:</strong> {{ leave.subject }}</p>
+      <p><strong>Description:</strong> {{ leave.description }}</p>
+      <p><strong>Leave Dates:</strong> {{ leave.starting_date.strftime('%d %b %Y') }} – {{ leave.ending_date.strftime('%d %b %Y') }}</p>
+      <p><strong>Issued On:</strong> {{ leave.issue_date.strftime('%d %b %Y') if leave.issue_date else 'Not issued yet' }}</p>
+      <p><strong>Parent's Contact:</strong> {{ leave.parents_number }}</p>
+      <hr>
+      <p><strong>Approved by Teacher:</strong> {{ leave.approvedby_teacher }}</p>
+      <p><strong>Approved by HOD:</strong> {{ leave.approvedby_hod }}</p>
+      <p><strong>Approved by Warden:</strong> {{ leave.approvedby_warden }}</p>
+      <p><strong>Final Status:</strong>
+        {% if leave.final_status == 'Pending' %}
+          <span class="badge bg-warning text-dark">Pending</span>
+        {% elif leave.final_status == 'Approved' %}
+          <span class="badge bg-success">Approved</span>
+        {% else %}
+          <span class="badge bg-danger">Rejected</span>
+        {% endif %}
+      </p>
+
+      <!-- Back Button -->
+      <div class="mt-4">
+        <a href="{{ url_for('stud.student_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

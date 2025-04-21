@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-5.5">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body p-4">
+
+        <h3 class="card-title text-center mb-4 fw-bold text-primary" >Login to Your Account</h3>
+
+        <form method="POST" action="/login">
+          <!-- Flash Messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="alert-container mb-3">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+
+          <!-- Username -->
+          <div class="mb-3">
+            <label for="username" class="form-label fw-semibold">Username</label>
+            <input type="text" class="form-control rounded-3" id="username" name="username" placeholder="username" required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="password" class="form-label fw-semibold">Password</label>
+            <input type="password" class="form-control rounded-3" id="password" name="password" placeholder="••••••••" required>
+          </div>
+
+          <!-- User Type -->
+          <div class="mb-3">
+            <label for="usertype" class="form-label fw-semibold">User Type</label>
+            <select name="usertype" id="usertype" class="form-select rounded-3">
+              <option value="student">Student</option>
+              <option value="faculty">Faculty</option>
+            </select>
+          </div>
+
+          <!-- Remember & Forgot -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="remember">
+              <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+            <a href="#" class="text-decoration-none fw-semibold" >Forgot password?</a>
+          </div>
+
+          <!-- Login Button -->
+          <div class="d-grid mb-3">
+            <button type="submit" class="btn btn-lg" style="background-color: #4a90e2; color: white;">Login</button>
+          </div>
+        </form>
+
+        <!-- Divider -->
+        <hr class="my-3">
+
+        <!-- Sign up CTA -->
+        <div class="text-center">
+          <p class="mb-0">Don't have an account?
+            <a href="/register" class="text-decoration-none fw-bold" style="color: #7e5bef;">Sign up</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

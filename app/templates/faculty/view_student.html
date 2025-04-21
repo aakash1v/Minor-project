@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Student Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="mb-3">Student Information</h4>
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Date of Birth:</strong> {{ user.dob.strftime('%d %b %Y') if user.dob else 'N/A' }}</p>
+      <p><strong>Mobile:</strong> {{ user.mobile }}</p>
+      <p><strong>PRN:</strong> {{ student.prn }}</p>
+      <p><strong>Branch:</strong> {{ student.branch }}</p>
+      <p><strong>Hostel:</strong> {{ student.hostel }}</p>
+      <p><strong>Parent's Number:</strong> {{ leave.parents_number }}</p>
+      <p><strong>subject:</strong> {{ leave.subject }}</p>
+      <p><strong>Description:</strong> {{ leave.description }}</p>
+
+      <div class="mt-4">
+        <a href="{{ url_for('faculty.faculty_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

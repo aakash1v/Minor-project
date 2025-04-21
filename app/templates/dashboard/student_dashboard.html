@@ -7,6 +7,19 @@
   <div class="text-center mb-5">
     <h2 class="fw-bold">Welcome, {{ current_user.name }}!</h2>
     <p class="text-muted">Track your leave history and apply for a new one below.</p>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alert-container mb-3">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
   </div>
 
   <!-- Leave Requests Table -->
@@ -35,29 +48,35 @@
                 </thead>
                 <tbody>
                   {% for request in leave_requests %}
-                  {% if request.final_status == 'Pending' %}
                   <tr>
                     <td>{{ request.type|capitalize }}</td>
                     <td>{{ request.subject }}</td>
                     <td>{{ request.starting_date.strftime('%d %b %Y') }} – {{ request.ending_date.strftime('%d %b %Y') }}</td>
-                    <td>{{ request.issue_date.strftime('%d %b %Y') }}</td>
-                    <td>{{ request.approvedby_teacheder or "Not yet" }}</td>
+                    {% if  request.issue_date %}
+                      <td>{{ request.issue_date.strftime('%d %b %Y') }} </td>
+                    {% else %}
+                      <td>Not issued yet</td>
+                    {% endif %}
+                    <td>{{ request.approvedby_teacher or "Not yet" }} </td>
                     <td>{{ request.approvedby_hod or "Not yet" }}</td>
                     <td>{{ request.approvedby_warden or "Not yet" }}</td>
                     <td>
-                      <span class="badge bg-warning text-dark">Pending</span>
+                      {% if request.final_status.lower() == "approved" %}
+                      <span class="badge bg-success text-dark">{{request.final_status}}</span>
+                      {% else %}
+                      <span class="badge bg-warning text-dark">{{request.final_status}}</span>
+                      {% endif %}
                     </td>
                     <td>
                         {% if request.final_status == 'Pending' %}
-                          <form action="{{ url_for('cancel_leave', leave_id=request.id) }}" method="POST" style="display:inline;">
+                          <form action="{{ url_for('stud.cancel_leave', leave_id=request.id) }}" method="POST" style="display:inline;">
                             <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this leave request?');">Cancel</button>
                           </form>
                         {% else %}
-                          <a href="{{ url_for('leave_req', leave_id=request.id) }}" class="btn btn-outline-secondary btn-sm">View</a>
+                          <a href="{{ url_for('stud.leave_req', leave_id=request.id) }}" class="btn btn-outline-secondary btn-sm">View</a>
                         {% endif %}
                       </td>
                   </tr>
-                  {% endif %}
                   {% endfor %}
                 </tbody>
               </table>
@@ -79,7 +98,7 @@
           <h5 class="mb-0 fw-semibold">Apply for Leave</h5>
         </div>
         <div class="card-body p-4">
-          <form method="POST" action="{{ url_for('leave_req') }}">
+          <form method="POST" action="{{ url_for('stud.leave_req') }}">
             <!-- Leave Type -->
             <div class="mb-3">
               <label class="form-label fw-semibold">Leave Type</label>
