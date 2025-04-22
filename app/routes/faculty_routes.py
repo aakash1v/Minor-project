@@ -8,6 +8,7 @@ from datetime import datetime
 import pytz
 IST = pytz.timezone('Asia/Kolkata')
 current_ist_time = datetime.now(IST)
+from app.models import Student, User
 
 
 faculty_bp = Blueprint('faculty', __name__, url_prefix='/faculty')
@@ -15,9 +16,32 @@ faculty_bp = Blueprint('faculty', __name__, url_prefix='/faculty')
 @faculty_bp.route('/faculty_dashboard')
 @login_required
 def faculty_dashboard():
-    # Show all pending and reviewed requests (modify filter as per role)
-    leave_requests = LeaveRequest.query.order_by(LeaveRequest.id.desc()).all()
-    return render_template('dashboard/faculty_dashboard.html', leave_requests=leave_requests)
+    department_filter = request.args.get('department')
+    hostel_filter = request.args.get('hostel')
+
+    query = LeaveRequest.query.join(Student).join(User)
+
+    if department_filter:
+        query = query.filter(Student.branch == department_filter)
+
+    if hostel_filter:
+        query = query.filter(Student.hostel == hostel_filter)
+
+    leave_requests = query.order_by(LeaveRequest.id.desc()).all()
+
+    # For dropdown options (optional: deduplicate)
+    departments = [s.branch for s in Student.query.distinct(Student.branch)]
+    hostels = [s.hostel for s in Student.query.distinct(Student.hostel)]
+
+    return render_template(
+        'dashboard/faculty_dashboard.html',
+        leave_requests=leave_requests,
+        departments=departments,
+        hostels=hostels,
+        selected_department=department_filter,
+        selected_hostel=hostel_filter
+    )
+
 
 @faculty_bp.route('/approve/<int:leave_id>', methods=['POST'])
 @login_required
