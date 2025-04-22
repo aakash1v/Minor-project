@@ -55,7 +55,7 @@
           <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarProfileDropdown">
             <li>
               <a class="dropdown-item"
-                 href="{% if current_user.usertype == 'faculty' %}{{ url_for('faculty.faculty_dashboard') }}{% else %}{{ url_for('stud.student_dashboard') }}{% endif %}">
+                 href="{% if current_user.usertype == 'faculty' %}{{ url_for('faculty.faculty_dashboard') }}{% elif current_user.usertype == 'student' %}{{ url_for('stud.student_dashboard') }} {% else %} {{url_for('auth.home')}} {% endif %}">
                 Dashboard
               </a>
             </li>

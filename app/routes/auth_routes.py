@@ -73,8 +73,11 @@ def login():
             flash(f"{usertype.capitalize()} logged in successfully.", "success")
             if user.usertype == "student":
                 return redirect(url_for("stud.student_dashboard"))  #
-            else:
+            elif user.usertype == "faculty":
                 return redirect(url_for('faculty.faculty_dashboard'))
+            else:
+                return redirect(url_for('auth.home'))
+
 
         flash("Invalid credentials. Try again.", "danger")
     return render_template("registration/login.html")
