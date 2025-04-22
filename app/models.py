@@ -51,7 +51,7 @@ class LeaveRequest(db.Model):
     description = db.Column(db.Text)
     starting_date = db.Column(db.Date)
     ending_date = db.Column(db.Date)
-    issue_date = db.Column(db.Date)
+    issue_date = db.Column(db.DateTime)  
     parents_number = db.Column(db.String(15))
 
     approvedby_teacher = db.Column(db.String(100))

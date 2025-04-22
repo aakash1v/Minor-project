@@ -53,7 +53,7 @@
                     <td>{{ request.subject }}</td>
                     <td>{{ request.starting_date.strftime('%d %b %Y') }} – {{ request.ending_date.strftime('%d %b %Y') }}</td>
                     {% if  request.issue_date %}
-                      <td>{{ request.issue_date.strftime('%d %b %Y') }} </td>
+                      <td>{{ request.issue_date.strftime("%d-%m-%Y %I:%M %p") }} </td>
                     {% else %}
                       <td>Not issued yet</td>
                     {% endif %}

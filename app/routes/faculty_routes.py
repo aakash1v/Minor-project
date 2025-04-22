@@ -3,6 +3,12 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 from app.models import LeaveRequest, db, Faculty
+from app.mail_utils import send_rejection_email, send_approval_email
+from datetime import datetime
+import pytz
+IST = pytz.timezone('Asia/Kolkata')
+current_ist_time = datetime.now(IST)
+
 
 faculty_bp = Blueprint('faculty', __name__, url_prefix='/faculty')
 
@@ -25,6 +31,8 @@ def approve_leave(leave_id):
 
     if leave.type.lower() == "emergency":
         leave.final_status = "Approved"
+        leave.issue_date = current_ist_time
+        send_approval_email(leave.student.user.email,leave.student.user.name, leave.subject)
 
     if faculty.role == 'teacher':
         leave.approvedby_teacher = 'Approved'
@@ -43,6 +51,8 @@ def approve_leave(leave_id):
         leave.approvedby_warden == 'Approved'
     ]):
         leave.final_status = 'Approved'
+        leave.issue_date = current_ist_time
+        send_approval_email(leave.student.user.email, leave.student.user.name,  leave.subject)
 
     db.session.commit()
     flash('Leave approved successfully.', 'success')
@@ -54,7 +64,9 @@ def approve_leave(leave_id):
 def reject_leave(leave_id):
     leave = LeaveRequest.query.get_or_404(leave_id)
     leave.approvedby_teacheder = current_user.name
+    leave.issue_date = current_ist_time
     leave.final_status = 'Rejected'
+    send_rejection_email(leave.student.user.email, leave.student.user.name,  leave.subject)
     db.session.commit()
     flash('Leave rejected.', 'danger')
     return redirect(url_for('faculty.faculty_dashboard'))
