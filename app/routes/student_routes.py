@@ -63,6 +63,7 @@ def leave_req():
         leave_type = request.form["leave_type"]
         subject = request.form["subject"]
         description = request.form["description"]
+        parent_name = request.form["parent_name"]
         parent_contact = request.form["parent_contact"]
         start_date = datetime.strptime(request.form["start_date"], "%Y-%m-%d").date()
         end_date = datetime.strptime(request.form["end_date"], "%Y-%m-%d").date()
@@ -75,6 +76,7 @@ def leave_req():
             starting_date=start_date,
             ending_date=end_date,
             parents_number=parent_contact,
+            parents_name=parent_name,
             approvedby_teacher="Pending",
             approvedby_hod="Pending",
             approvedby_warden="Pending",
@@ -94,9 +96,9 @@ def leave_req():
         if leave.student_id != current_user.student_profile.id:
             flash("Unauthorized access to leave request.", "danger")
             return redirect(url_for("stud.student_dashboard"))
-        return render_template("leave_request_view.html", leave=leave)
+        return render_template("student/leave_request_view.html", leave=leave)
 
-    return render_template("leave_request.html")
+    return render_template("student/leave_request.html")
 
 
 

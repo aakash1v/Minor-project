@@ -13,8 +13,19 @@
       <p><strong>PRN:</strong> {{ student.prn }}</p>
       <p><strong>Branch:</strong> {{ student.branch }}</p>
       <p><strong>Hostel:</strong> {{ student.hostel }}</p>
+      
+      <p><strong>Parent's Name:</strong> {{ leave.parents_name }}</p>
       <p><strong>Parent's Number:</strong> {{ leave.parents_number }}</p>
-      <p><strong>subject:</strong> {{ leave.subject }}</p>
+      <div class="d-flex gap-2 mb-3">
+        <a href="tel:{{ leave.parents_number }}" class="btn btn-outline-primary">
+          📞 Call Parent
+        </a>
+        <a href="https://wa.me/91{{ leave.parents_number | replace('+91', '') | replace(' ', '') }}" class="btn btn-outline-success" target="_blank">
+          💬 WhatsApp Parent
+        </a>
+      </div>
+
+      <p><strong>Subject:</strong> {{ leave.subject }}</p>
       <p><strong>Description:</strong> {{ leave.description }}</p>
 
       <div class="mt-4">

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Verify Otp{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-5.5">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body p-4">
+
+        <h3 class="card-title text-center mb-4 fw-bold text-primary" >Enter you Otp</h3>
+
+        <form method="POST" action="/verify_otp">
+          <!-- Flash Messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="alert-container mb-3">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+
+          <!-- Username -->
+          <div class="mb-3">
+            <label for="otp" class="form-label fw-semibold">otp</label>
+            <input type="text" class="form-control rounded-3" id="otp" name="otp" placeholder="otp" required>
+          </div>
+
+
+
+          <!-- Submit Button -->
+          <div class="d-grid mb-3">
+            <button type="submit" class="btn btn-lg" style="background-color: #4a90e2; color: white;">Verify</button>
+          </div>
+        </form>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

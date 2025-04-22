@@ -50,3 +50,7 @@ def send_contact_email(sender_name, sender_email, message_text):
     """
     send_email(subject, "aakashkumarpy@gmail.com", body)
 
+def send_otp(sender_name, recipient_email, otp):
+    subject = f"Hello {sender_name} , otp : {otp}"
+    body = f"Dear {sender_name}, \n\nYour otp is {otp}"
+    send_email(subject, recipient_email, body)
