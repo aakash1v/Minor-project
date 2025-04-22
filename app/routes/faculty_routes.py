@@ -23,6 +23,9 @@ def approve_leave(leave_id):
         flash('Faculty profile not found.', 'danger')
         return redirect(url_for('faculty.faculty_dashboard'))
 
+    if leave.type.lower() == "emergency":
+        leave.final_status = "Approved"
+
     if faculty.role == 'teacher':
         leave.approvedby_teacher = 'Approved'
     elif faculty.role == 'hod':

@@ -5,7 +5,6 @@
 <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
   <h2 class="mb-4 text-center">Your Profile</h2>
   <form action="{{ url_for('stud.profile') }}" method="POST" enctype="multipart/form-data">
-
     <div class="row mb-3">
       <div class="col">
         <label for="name" class="form-label">Full Name</label>
@@ -17,31 +16,49 @@
       </div>
     </div>
 
+    {% if student %}
     <div class="row mb-3">
       <div class="col">
         <label for="branch" class="form-label">Branch</label>
         <input type="text" class="form-control" name="branch" id="branch" value="{{ student.branch }}" required>
       </div>
       <div class="col">
+        <label for="hostel" class="form-label">Hostel</label>
+        <input type="text" class="form-control" name="hostel" id="hostel" value="{{ student.hostel }}" required>
+      </div>
+    </div>
+    {% elif faculty %}
+    <div class="row mb-3">
+      <div class="col">
+        <label for="role" class="form-label">Role</label>
+        <select class="form-control" name="role" id="role" required>
+          <option value="hod" {% if faculty.role == "HOD" %}selected{% endif %}>HOD</option>
+          <option value="dean" {% if faculty.role == "Dean" %}selected{% endif %}>Dean</option>
+          <option value="warden" {% if faculty.role == "Warden" %}selected{% endif %}>Warden</option>
+          <option value="teacher" {% if faculty.role == "Teacher" %}selected{% endif %}>Teacher</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="department" class="form-label">Department</label>
+        <input type="text" class="form-control" name="department" id="department" value="{{ faculty.department }}" required>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="row mb-3">
+      <div class="col">
         <label for="username" class="form-label">Username</label>
         <input type="text" class="form-control" name="username" id="username" value="{{ user.username }}" required>
       </div>
-    </div>
-
-    <div class="row mb-3">
       <div class="col">
         <label for="email" class="form-label">Email</label>
         <input type="email" class="form-control" name="email" id="email" value="{{ user.email }}" required>
       </div>
-      <div class="col">
-        <label for="mobile" class="form-label">Mobile</label>
-        <input type="tel" class="form-control" name="mobile" id="mobile" value="{{ user.mobile }}" required>
-      </div>
     </div>
 
     <div class="mb-3">
-      <label for="hostel" class="form-label">Hostel Name</label>
-      <input type="text" class="form-control" name="hostel" id="hostel" value="{{ student.hostel }}" required>
+      <label for="mobile" class="form-label">Mobile</label>
+      <input type="tel" class="form-control" name="mobile" id="mobile" value="{{ user.mobile }}" required>
     </div>
 
     <div class="mb-3">

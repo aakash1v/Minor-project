@@ -16,42 +16,43 @@ stud_bp = Blueprint("stud", __name__)
 @stud_bp.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    if current_user.usertype != "student":
-        flash("Access denied.", "danger")
-        return redirect(url_for("main.index"))  # or wherever
-
-    student_user = current_user
-    student = student_user.student_profile
+    user = current_user
+    student = user.student_profile
+    faculty = user.faculty_profile
 
     if request.method == "POST":
         # Update User (common) fields
-        student_user.name = request.form["name"]
+        user.name = request.form["name"]
         dob_str = request.form["dob"]
-        student.dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
-        student_user.username = request.form["username"]
-        student_user.email = request.form["email"]
-        student_user.mobile = request.form["mobile"]
+        user.dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+        user.username = request.form["username"]
+        user.email = request.form["email"]
+        user.mobile = request.form["mobile"]
 
         if request.form["password"]:
-            student_user.password = generate_password_hash(request.form["password"], method="sha256")
+            user.password =  generate_password_hash(request.form["password"], method='pbkdf2:sha256')
 
         # Update Student-specific fields
-        student.branch = request.form["branch"]
-        student.hostel = request.form["hostel"]
+        if student:
+            student.branch = request.form["branch"]
+            student.hostel = request.form["hostel"]
+        elif faculty :
+            faculty.role = request.form["role"]
+            faculty.department = request.form["department"]
 
         # Photo upload
         if "photo" in request.files:
             photo = request.files["photo"]
             if photo and photo.filename != "":
-                filename = f"{student_user.id}_{photo.filename}"
-                photo.save(os.path.join("static/profile", filename))  # make sure this folder exists
-                student_user.photo = filename
+                filename = f"{user.id}_{photo.filename}"
+                photo.save(os.path.join("static/profile", filename))  
+                user.photo = filename
 
         db.session.commit()
         flash("Profile updated successfully!", "success")
         return redirect(url_for("stud.profile"))
 
-    return render_template("profile.html", student=student, user=student_user)
+    return render_template("profile.html", student=student, user=user, faculty=faculty)
 
 
 @stud_bp.route("/leave_req", methods=["GET", "POST"])
@@ -67,7 +68,7 @@ def leave_req():
         end_date = datetime.strptime(request.form["end_date"], "%Y-%m-%d").date()
 
         leave = LeaveRequest(
-            student_id=current_user.id,
+            student_id=current_user.student_profile.id,
             type=leave_type,
             subject=subject,
             description=description,
@@ -90,7 +91,7 @@ def leave_req():
     if leave_id:
         leave = LeaveRequest.query.get_or_404(leave_id)
         # Optional: Ensure the student can only view their own leave
-        if leave.student_id != current_user.id:
+        if leave.student_id != current_user.student_profile.id:
             flash("Unauthorized access to leave request.", "danger")
             return redirect(url_for("stud.student_dashboard"))
         return render_template("leave_request_view.html", leave=leave)
@@ -103,7 +104,7 @@ def leave_req():
 @stud_bp.route('/student_dashboard', methods=['GET'])
 def student_dashboard():
     # Fetch leave requests for the current student
-    leave_requests = LeaveRequest.query.filter_by(student_id=current_user.id).all()
+    leave_requests = LeaveRequest.query.filter_by(student_id=current_user.student_profile.id).all()
 
     return render_template('dashboard/student_dashboard.html', leave_requests=leave_requests)
 

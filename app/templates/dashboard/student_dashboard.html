@@ -63,6 +63,8 @@
                     <td>
                       {% if request.final_status.lower() == "approved" %}
                       <span class="badge bg-success text-dark">{{request.final_status}}</span>
+                      {% elif request.final_status.lower() == "rejected"  %}
+                      <span class="badge bg-danger text-dark">{{request.final_status}}</span>
                       {% else %}
                       <span class="badge bg-warning text-dark">{{request.final_status}}</span>
                       {% endif %}
