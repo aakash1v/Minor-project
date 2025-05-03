@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 SENDER_EMAIL = "examplenamez543@gmail.com"
-SENDER_PASSWORD = "mfnppwcnqlmpzymc"
+SENDER_PASSWORD = "yfcntqrmjcffxcjg"
 
 def send_email(subject, recipient_email, body):
     try:
