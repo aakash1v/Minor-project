@@ -39,6 +39,8 @@ def send_rejection_email(recipient_email, student_name, leave_reason):
     send_email(subject, recipient_email, body)
 
 def send_contact_email(sender_name, sender_email, message_text):
+
+    return
     subject = f"New Contact Form Submission from {sender_name}"
     body = f"""
     You have received a new contact form submission:
